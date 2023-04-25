@@ -1,0 +1,18 @@
+body{
+    background-position: center;
+    background-size: cover;
+}
+.header{
+    width: 100%;
+    margin: 0px;
+    font-size: large;
+}
+
+
+
+
+canvas{
+    border-radius: 10px;
+    background-color: whitesmoke;
+    box-shadow: 7px 7px 7px white;
+}
