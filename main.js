@@ -1,69 +1,64 @@
+Status = "";
+objects = [];
 
-status="";
-objects= [];
+function setup(){
+    canvas = createCanvas(300,290);
+    canvas.position(480,250);
+    video = createCapture(VIDEO);
+    video.size(300,290);
+    video.hide();
+}
 
-function preload(){
+function modelLoaded(){
+    console.log("Model_Loaded");
+    Status = true;
+}
+function draw(){
+    image(video,0,0,300,290);
+    if(Status != ""){
 
+        object_Detector.detect(video, gotResults);
+
+
+        for(i = 0;i < objects.length;i++){
+
+            document.getElementById("status").innerHTML = "Status : Object Detected";
+            console.log(objects.length);
+
+
+            fill("Red");
+            percent = floor(objects[i].confidence * 100);
+            text(objects[i].label + " " + percent + "%",objects[i].x + 15,objects[i].y + 15);
+            noFill();
+            stroke("Black");
+            rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+
+            if(objects[i].label == input_text){
+                video.stop();
+                object_Detector.detect(gotResults);
+                document.getElementById("object_found").innerHTML = input_text+" Found";
+                
+            }
+            else{
+                document.getElementById("object_found").innerHTML = input_text + " Not Found";
+            }
+        }
+    }
+}
+
+function gotResults(error,results){
+    if(error){
+        console.error(error);
+    }
+    else{
+        console.log(results);
+        objects = results;
+    }
 }
 
 
-
- function setup(){
- canvas=createCanvas(380,380);
- canvas.center();
- video=createCapture(VIDEO);
- video.hide();
- video.size(380,380);
-
-
-
- }
-
- function Start(){
-   objectdetector=ml5.objectDetector("cocossd",modelloaded);
-   document.getElementById("status").innerHTML="status: detecting objects";
-    }
-
- function draw(){
-   image(video,0,0,380,380);
-   if(status!="")
+function start(){
+    object_Detector = ml5.objectDetector('cocossd',modelLoaded);
+    document.getElementById("status").innerHTML = "Status: Detecting Object";
    
-   {
-      objectdetector.detect(video,gotresult);
-      for(i=0; i<objects.length; i++){
-         document.getElementById("status").innerHTML="status: Objects detected";
-         document.getElementById("Number_Of_Objects").innerHTML='Number of objects detected are : '+objects.length;
-         fill("red");
-         percent=floor(objects[i].confidence*100);
-         text(objects[i].label+" "+percent+"%", objects[i].x, objects[i].y);
-         noFill();
-         stroke("red");
-         rect( objects[i].x,objects[i].y,objects[i].width,objects[i].height);
-      }
-   
-   }
-   
-   
-   }
-
-
- function modelloaded(){
-    console.log("Model Is Loaded");
-    status=true;
-
-    
-
-
- }
-
- function gotresult(error,results)
- {
-    if(error){
-console.log(error);
-
-    }
-  console.log(results);
-    objects=results;
- }
-
- 
+}
