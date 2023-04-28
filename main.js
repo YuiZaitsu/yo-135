@@ -2,10 +2,10 @@ Status = "";
 objects = [];
 
 function setup(){
-    canvas = createCanvas(300,290);
+    canvas = createCanvas(480,380);
     canvas.position(480,250);
     video = createCapture(VIDEO);
-    video.size(300,290);
+    video.size(480,380);
     video.hide();
 }
 
